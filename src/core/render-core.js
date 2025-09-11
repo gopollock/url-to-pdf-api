@@ -52,6 +52,8 @@ async function render(_opts = {}) {
     goto: {
       waitUntil: 'networkidle0',
     },
+    defaultTimeout: 0,
+    defaultNavigationTimeout: 0,
     output: 'pdf',
     pdf: {
       format: 'A4',
@@ -74,6 +76,9 @@ async function render(_opts = {}) {
 
   const browser = await createBrowser(opts);
   const page = await browser.newPage();
+
+  await page.setDefaultTimeout(opts.defaultTimeout);
+  await page.setDefaultNavigationTimeout(opts.defaultNavigationTimeout);
 
   page.on('console', (...args) => logger.info('PAGE LOG:', ...args));
 
