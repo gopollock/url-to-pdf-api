@@ -156,6 +156,8 @@ function getOptsFromQuery(query) {
       timeout: query['goto.timeout'],
       waitUntil: query['goto.waitUntil'],
     },
+    defaultTimeout: query['defaultTimeout'],
+    defaultNavigationTimeout: query['defaultNavigationTimeout'],
     pdf: {
       fullPage: query['pdf.fullPage'],
       scale: query['pdf.scale'],
