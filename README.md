@@ -159,7 +159,7 @@ expressed with the dot notation. E.g. `?pdf.scale=2` instead of `{ pdf: { scale:
 The only required parameter is `url`.
 
 Parameter | Type | Default | Description
-----------|------|---------|------------
+----------|------|-----|------------
 url | string | - | URL to render as PDF. (required)
 output | string | pdf | Specify the output format. Possible values: `pdf` , `screenshot` or `html`.
 emulateScreenMedia | boolean | `true` | Emulates `@media screen` when rendering the PDF.
@@ -185,8 +185,10 @@ cookies[0][secure] | boolean | - | Cookie secure
 cookies[0][sameSite] | string | - | `Strict` or `Lax`
 goto.timeout | number | `30000` |  Maximum navigation time in milliseconds, defaults to 30 seconds, pass 0 to disable timeout.
 goto.waitUntil | string | `networkidle0` | When to consider navigation succeeded. Options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. `load` - consider navigation to be finished when the load event is fired. `domcontentloaded` - consider navigation to be finished when the `DOMContentLoaded` event is fired. `networkidle0` - consider navigation to be finished when there are no more than 0 network connections for at least `500` ms. `networkidle2` - consider navigation to be finished when there are no more than 2 network connections for at least `500` ms.
+defaultTimeout | number | `0` | Sets the default maximum time (in milliseconds) for most page operations—for example page.click(), page.type(), page.waitForSelector()."
+defaultNavigationTimeout | number | `0` | Sets the default maximum time (in milliseconds) for navigation-related actions, such as page.goto(), page.reload(), and page.waitForNavigation()."
 pdf.scale | number | `1` | Scale of the webpage rendering.
-pdf.printBackground | boolean | `false`| Print background graphics.
+pdf.printBackground | boolean | `false` | Print background graphics.
 pdf.displayHeaderFooter | boolean | `false` | Display header and footer.
 pdf.headerTemplate | string | - | HTML template to use as the header of each page in the PDF. **Currently Puppeteer basically only supports a single line of text and you must use pdf.margins+CSS to make the header appear!** See https://github.com/alvarcarto/url-to-pdf-api/issues/77.
 pdf.footerTemplate | string | - | HTML template to use as the footer of each page in the PDF. **Currently Puppeteer basically only supports a single line of text and you must use pdf.margins+CSS to make the footer appear!** See https://github.com/alvarcarto/url-to-pdf-api/issues/77.
