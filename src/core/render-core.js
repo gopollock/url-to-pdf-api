@@ -177,7 +177,7 @@ async function render(_opts = {}) {
         const height = await getFullPageHeight(page);
         opts.pdf.height = height;
       }
-      data = await page.pdf(opts.pdf);
+      data = Buffer.from(await page.pdf(opts.pdf));
     } else if (opts.output === 'html') {
       data = await page.evaluate(() => document.documentElement.innerHTML);
     } else {
