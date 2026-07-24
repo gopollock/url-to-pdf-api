@@ -88,11 +88,11 @@ async function render(_opts = {}) {
     };
 
     page.once('pageerror', err => {
-      rejectRender('Unhandled error in rendered page', err);
+      rejectRender('#### Unhandled error in rendered page', err);
     });
 
     page.once('error', err => {
-      rejectRender('Browser page crashed', err);
+      rejectRender('#### Browser page crashed', err);
     });
   });
 
