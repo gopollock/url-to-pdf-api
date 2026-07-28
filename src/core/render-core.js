@@ -77,17 +77,29 @@ async function render(_opts = {}) {
   const browser = await createBrowser(opts);
   const page = await browser.newPage();
 
+  const pageFailurePromise = new Promise((_, reject) => {
+    const rejectRender = (message, err) => {
+      logger.error(`${message}: ${err}`);
+      logger.error(err.stack);
+
+      const renderError = new Error(`${message}: ${err.message}`);
+      renderError.status = 412;
+      reject(renderError);
+    };
+
+    page.once('pageerror', err => {
+      rejectRender('#### Unhandled error in rendered page', err);
+    });
+
+    page.once('error', err => {
+      rejectRender('#### Browser page crashed', err);
+    });
+  });
+
   await page.setDefaultTimeout(opts.defaultTimeout);
   await page.setDefaultNavigationTimeout(opts.defaultNavigationTimeout);
 
   page.on('console', (...args) => logger.info('PAGE LOG:', ...args));
-
-  page.on('error', (err) => {
-    logger.error(`Error event emitted: ${err}`);
-    logger.error(err.stack);
-    browser.close();
-  });
-
 
   this.failedResponses = [];
   page.on('requestfailed', (request) => {
@@ -133,9 +145,18 @@ async function render(_opts = {}) {
       await page.goto(opts.url, opts.goto);
     }
 
-    if (_.isNumber(opts.waitFor) || _.isString(opts.waitFor)) {
-      logger.info(`Wait for ${opts.waitFor} ..`);
-      await new Promise(r => setTimeout(r, opts.waitFor));
+    if (_.isNumber(opts.waitFor)) {
+      logger.info(`Wait for ${opts.waitFor} ms ..`);
+      await Promise.race([
+        new Promise(resolve => setTimeout(resolve, opts.waitFor)),
+        pageFailurePromise,
+      ]);
+    } else if (_.isString(opts.waitFor)) {
+      logger.info(`Wait for selector ${opts.waitFor} ..`);
+      await Promise.race([
+        page.waitForSelector(opts.waitFor),
+        pageFailurePromise,
+      ]);
     }
 
     if (opts.scrollPage) {
