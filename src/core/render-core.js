@@ -6,7 +6,7 @@ const logger = require('../util/logger')(__filename);
 
 async function createBrowser(opts) {
   const browserOpts = {
-    ignoreHTTPSErrors: opts.ignoreHttpsErrors,
+    acceptInsecureCerts: opts.ignoreHttpsErrors,
     sloMo: config.DEBUG_MODE ? 250 : undefined,
   };
   if (config.BROWSER_WS_ENDPOINT) {
